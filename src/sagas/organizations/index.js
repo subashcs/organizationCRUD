@@ -9,16 +9,17 @@ export function* getOrganizations(action) {
   
     const response = yield call(axios.get, `${SERVER}/organizations`, action.payload);
 
-    if (response.success) {  
-        response.map((item, key) => {
+    if (response.status===200 && response.data) {  
+        response.data.map((item) => {
             data.push({
                 id: item.id,
                 primaryContactPersonName: item.primaryContactPersonName,
                 organizationType: item.organizationType,
+                organizationName:item.organizationName,
             })
 
         })
-
+        console.log(data);
     yield put({type: GET_ORGANIZATIONS_SUCCESS, payload: data});
         
     }
@@ -30,25 +31,20 @@ export function* getOrganizations(action) {
 }
 
 export function* addOrganization(action) {
-    let newdata = action.payload;
-    var today = new Date();
-    const time= today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric',second:'numeric', hour12: true });
-
-    var date= today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-    var id =Math.floor(Math.random() * 10000);
-    newdata.id="organization"+date+id+time;
+  
 
     
     const response = yield call(axios.post, `${SERVER}/organizations`, action.payload);
     console.log(response);
 
-    if(response.error){
-        const message ="Failed To Add Organization, "+response.name;
-        console.log(message);
-    }
-    else{
+    if(response.status>200){
         yield put({type: GET_ORGANIZATIONS, payload: ''});
 
+       
+    }
+    else{
+        const message ="Failed To Add Organization, "+response;
+        console.log(message);
     }
 
 }

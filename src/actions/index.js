@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   DISPLAY_MESSAGE,
   GET_ORGANIZATIONS,

@@ -9,8 +9,8 @@ export function* getIrrigationGroups(action) {
   
     const response = yield call(axios.get, `${SERVER}/irrigation-user-groups`, action.payload);
 
-    if (response.success) {  
-        response.map((item, key) => {
+    if (response.status===200 && response.data) {  
+        response.data.map((item, key) => {
             data.push({
                 id: item.id,
                 totalBeneficiary: item.totalBeneficiary,
@@ -43,7 +43,7 @@ export function* addIrrigationGroup(action) {
     const response = yield call(axios.post, `${SERVER}/irrigation-user-groups`, action.payload);
     console.log(response);
 
-    if(response.error){
+    if(response.status!==200){
         const message ="Failed To Add IUG, "+response.name;
         console.log(message);
     }
