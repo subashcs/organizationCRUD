@@ -48,7 +48,7 @@ const Home = (props) => {
         setTimeout(()=>{
             setOrganizations(props.organizations.message);
             
-        },2000);
+        },1000);
     })
 
     const addOrganization = ()=>{
