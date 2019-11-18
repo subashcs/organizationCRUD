@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/organizationCRUD/static/css/main.25a5fbd6.chunk.css",
+    "main.js": "/organizationCRUD/static/js/main.9c5427a3.chunk.js",
+    "main.js.map": "/organizationCRUD/static/js/main.9c5427a3.chunk.js.map",
+    "runtime-main.js": "/organizationCRUD/static/js/runtime-main.ea0085c5.js",
+    "runtime-main.js.map": "/organizationCRUD/static/js/runtime-main.ea0085c5.js.map",
+    "static/css/2.bd4f2bc1.chunk.css": "/organizationCRUD/static/css/2.bd4f2bc1.chunk.css",
+    "static/js/2.c74f8d29.chunk.js": "/organizationCRUD/static/js/2.c74f8d29.chunk.js",
+    "static/js/2.c74f8d29.chunk.js.map": "/organizationCRUD/static/js/2.c74f8d29.chunk.js.map",
+    "index.html": "/organizationCRUD/index.html",
+    "precache-manifest.18625e384587f378f8e5225df327800f.js": "/organizationCRUD/precache-manifest.18625e384587f378f8e5225df327800f.js",
+    "service-worker.js": "/organizationCRUD/service-worker.js",
+    "static/css/2.bd4f2bc1.chunk.css.map": "/organizationCRUD/static/css/2.bd4f2bc1.chunk.css.map",
+    "static/css/main.25a5fbd6.chunk.css.map": "/organizationCRUD/static/css/main.25a5fbd6.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ea0085c5.js",
+    "static/css/2.bd4f2bc1.chunk.css",
+    "static/js/2.c74f8d29.chunk.js",
+    "static/css/main.25a5fbd6.chunk.css",
+    "static/js/main.9c5427a3.chunk.js"
+  ]
+}
