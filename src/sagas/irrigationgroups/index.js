@@ -1,6 +1,6 @@
 import {call,put} from 'redux-saga/effects';
 import {SERVER } from '../../constants';
-import {GET_IRRIGATIONGROUPS_SUCCESS, GET_IRRIGATIONGROUPS,} from '../../actions/types';
+import {GET_IRRIGATIONGROUPS_SUCCESS, GET_IRRIGATIONGROUPS,GET_FAILURE,ADD_FAILURE,ADD_SUCCESS, GET_ORGANIZATIONS} from '../../actions/types';
 import axios from 'axios';
 let data = [];
 
@@ -17,6 +17,7 @@ export function* getIrrigationGroups(action) {
                 hasFormedWUSC: item.hasFormedWUSC,
                 organization:item.organization
             })
+            return null;
 
         })
 
@@ -24,11 +25,11 @@ export function* getIrrigationGroups(action) {
         
     }
     else{
-         console.log("Failed to get data",response);
+         const message="Failed to get irrigation groups"+response.status;
+         yield put({type:GET_FAILURE, payload: message});
     }
-
-
 }
+
 
 export function* addIrrigationGroup(action) {
     let newdata = action.payload;
@@ -41,15 +42,19 @@ export function* addIrrigationGroup(action) {
 
     
     const response = yield call(axios.post, `${SERVER}/irrigation-user-groups`, action.payload);
-    console.log(response);
+    
 
-    if(response.status!==200){
-        const message ="Failed To Add IUG, "+response.name;
-        console.log(message);
+    if(response.status>200 && response.data){
+       
+        yield put({type: GET_IRRIGATIONGROUPS, payload: ''});
+        yield put({type:GET_ORGANIZATIONS,payload:''});
+        
+        const message ="Success!! Irrigation Group Added";
+        yield put({type:ADD_SUCCESS, payload: message});
     }
     else{
-        yield put({type: GET_IRRIGATIONGROUPS, payload: ''});
-
+        const message ="Failed To Add Irrigation Group, "+response.status;
+        yield put({type:ADD_FAILURE, payload: message});
     }
 
 }

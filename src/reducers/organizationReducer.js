@@ -5,7 +5,7 @@ const initialState = {success:false,message:{}};
 export default function organizationReducer(state = initialState, action) {
 
   const  message  = action.payload||[];
-  console.log("retrieved inred",message);
+
 
 
   switch (action.type) {

@@ -11,12 +11,10 @@ import {getOrganizations,addOrganization,getIrrigationGroups,addIrrigationGroup}
 const Home = (props) => {
     
     const initialOrgFormState={organizationName:"",primaryContactPersonName:""};
-    const initialIrrigFormState={totalBeneficiary:"",hasFormedWUSC:"",organization:{}};
+    const initialIrrigFormState={totalBeneficiary:"",hasFormedWUSC:true,organization:{}};
     const [organizations,setOrganizations]=useState([]);
     const [organization,setOrganization]=useState(initialOrgFormState);
-    const[irrigationGroups,setIrrigationGroups]= useState(initialIrrigFormState);
-
-    //
+    const[irrigationGroup,setIrrigationGroup]= useState(initialIrrigFormState);
     const [currentlyAdded,setCurrentlyAdded] = useState('');
 
     const handleOrgInputChange = event => {
@@ -25,18 +23,26 @@ const Home = (props) => {
      
 
     };
+
     const handleIrriInputChange = event => {
         const {name, value} = event.target;
-        setIrrigationGroups({...irrigationGroups, [name]: value});
+        setIrrigationGroup({...irrigationGroup, [name]: value});
        
-
-
     };
 
     useEffect(()=>{
         
         props.getOrganizations();
+
     },[])
+    
+    useEffect(()=>{
+        if(props.info.message){ 
+            toast(props.info.message);
+
+        }
+    },[props.info])
+
     useEffect(()=>{
 
         setTimeout(()=>{
@@ -56,17 +62,36 @@ const Home = (props) => {
             var id =Math.floor(Math.random() * 10000);
             newdata.id="organization"+date+id+time;
 
-            props.addOrganization(newdata)
-            toast("Organization added.");  
+            props.addOrganization(newdata); 
+            setCurrentlyAdded(newdata.id);
+            setOrganization(initialOrgFormState);
         }
         else{
-            toast("Organization could not be added.");  
-
+            toast("Please provide all inputs,have you forgot to add organization first");  
         }
     }
 
     const addIrrigationGroup =()=>{
+            if(irrigationGroup.hasFormedWUSC&&irrigationGroup.totalBeneficiary&&currentlyAdded){
+                let newdata = irrigationGroup;
+                var today = new Date();
+                const time= today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric',second:'numeric', hour12: true });
+            
+                var date= today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                var id =Math.floor(Math.random() * 10000);
+                newdata.id="irrigation-group"+date+id+time;
+                
+                let org ={
+                    id:currentlyAdded
+                } 
+                newdata.organization=org;
+                props.addIrrigationGroup(newdata);
+                setIrrigationGroup(initialIrrigFormState);
+            }
+            else{
+                toast("Please provide all inputs");  
 
+            }
     }
     const toggleBar=()=>{
         return (
@@ -98,11 +123,11 @@ const Home = (props) => {
 
            
 
-           <form className="jumbotron">
+           <form className="jumbotron"  onSubmit={(event)=>{event.preventDefault();addIrrigationGroup();}}>
            <div className="form-group row">
                 <label htmlFor="totalBeneficiary" className="col-sm-2 col-form-label">Total Beneficiary HH</label>
                 <div className="col-sm-10">
-                <input type="number"  className="form-control-plaintext" name="totalBeneficiary" id="totalBeneficiary" value={irrigationGroups.totalBeneficiary} onChange={handleIrriInputChange} placeholder="Enter Total Beneficiary HH"/>
+                <input type="number"  className="form-control-plaintext" name="totalBeneficiary" id="totalBeneficiary" value={irrigationGroup.totalBeneficiary} onChange={handleIrriInputChange} placeholder="Enter Total Beneficiary HH"/>
                 </div>
             </div>   
             <fieldset className="form-group">
@@ -150,7 +175,8 @@ const Home = (props) => {
 const mapStateToProps=(state)=>{
     return{
         organizations:state.organizations,
-        irrigationgroups:state.irrigationgroups
+        irrigationgroups:state.irrigationgroups,
+        info:state.info
     }
 }
 const mapDispatchToProps=(dispatch)=>{
